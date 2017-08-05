@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.packt.webstore.domain.Product;
 import com.packt.webstore.domain.repository.ProductRepository;
+import com.packt.webstore.service.ProductService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,6 +18,6 @@ public class ProductController {
 		return "products";
 	}
 	@Autowired
-	private ProductRepository productRepository;
+	private ProductService productRepository;
 	
 }
