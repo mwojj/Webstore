@@ -9,6 +9,7 @@ import com.packt.webstore.domain.Product;
 public interface ProductRepository {
 	List<Product> getAllProducts();
 	List<Product> getProductsByCategory(String category);
+	List<Product> getProductsByManufacturer(String manufacturer);
 	Product getProductById(String ProductID);
 	Set<Product> getProductsByFilter(Map<String, List<String>> filterParams);
 }
