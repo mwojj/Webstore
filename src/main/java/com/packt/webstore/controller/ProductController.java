@@ -7,8 +7,10 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.MatrixVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.packt.webstore.domain.Product;
@@ -19,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Controller
 public class ProductController {
+
 	@RequestMapping
 	public String list(Model model) {
 		model.addAttribute("products", productService.getAllProducts());
@@ -44,10 +47,21 @@ public class ProductController {
 		return "products";
 	}
 
-	@RequestMapping("/products/filter/{prize}")
+	@RequestMapping("/products/filter/byPrize/{prize}")
 	public String getProductsByPrize(Model model,
 			@MatrixVariable(pathVar = "prize") Map<String, List<String>> filterParams) {
-		model.addAttribute("products", productService.getProductsByFilter(filterParams));
+		model.addAttribute("products", productService.getProductsByPrize(filterParams));
+		return "products";
+	}
+
+	@RequestMapping("/products/{category}/{prize}")
+	public String getProductsByCategoryAndPrizeAndManufacturer(Model model,
+			@PathVariable("category") String productCategory,
+			@MatrixVariable(pathVar = "prize") Map<String, List<String>> filterParams,
+			@RequestParam("manufacturer") String productManufacturer) {
+		model.addAttribute("products", productService.getProductsByManPrize(filterParams, productCategory, productManufacturer));
+
+		
 		return "products";
 	}
 
@@ -63,6 +77,19 @@ public class ProductController {
 		return "products";
 	}
 
+	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	public String getAddNewProductForm(Model model) {
+	Product newProduct = new Product();
+	model.addAttribute("newProduct", newProduct);
+	return "addProduct";
+	}
+	
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	public String processAddNewProductForm(@ModelAttribute("newProduct") Product newProduct) {
+	productService.addProduct(newProduct);
+	return "redirect:/products";
+	}
+	
 	@Autowired
 	private ProductService productService;
 

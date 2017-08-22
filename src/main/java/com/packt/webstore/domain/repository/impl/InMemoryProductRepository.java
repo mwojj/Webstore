@@ -52,6 +52,16 @@ public class InMemoryProductRepository implements ProductRepository {
 		return productsByCategory;
 	}
 
+	public List<Product> getProductsByUnitPrice(String unitPrice) {
+		List<Product> productsByUnitPrice = new ArrayList<Product>();
+		for (Product product : listOfProducts) {
+			if (unitPrice.equals(product.getUnitPrice())) {
+				productsByUnitPrice.add(product);
+			}
+		}
+		return productsByUnitPrice;
+	}
+
 	public Product getProductById(String productId) {
 		Product productById = null;
 		for (Product product : listOfProducts) {
@@ -70,7 +80,7 @@ public class InMemoryProductRepository implements ProductRepository {
 		Set<Product> productsByBrand = new HashSet<Product>();
 		Set<Product> productsByCategory = new HashSet<Product>();
 		Set<Product> productsByManufacturer = new HashSet<Product>();
-		Set<Product> productsByPrize = new HashSet<Product>();
+		Set<Product> productsByUnitPrice = new HashSet<Product>();
 		Set<String> criterias = filterParams.keySet();
 		if (criterias.contains("brand")) {
 			for (String brandName : filterParams.get("brand")) {
@@ -86,22 +96,81 @@ public class InMemoryProductRepository implements ProductRepository {
 				productsByCategory.addAll(this.getProductsByCategory(category));
 			}
 		}
-
-	/*
-	 
-			for (String prize : filterParams.get("prize")) {
-				productsByPrize.addAll(this.getProductsByCategory(category));
-			}
-		}
-
-		if (criterias.contains("high")) {
-			for (String prize : filterParams.get("prize")) {
-
-			}
-		}
-*/
 		productsByCategory.retainAll(productsByBrand);
 		return productsByCategory;
+	}
+
+	public Set<Product> getProductsByPrize(Map<String, List<String>> filterParams) {
+		Set<Product> productsByBrand = new HashSet<Product>();
+		Set<Product> productsByCategory = new HashSet<Product>();
+		Set<Product> productsByManufacturer = new HashSet<Product>();
+		Set<Product> productsByUnitPrice = new HashSet<Product>();
+		Set<String> criterias = filterParams.keySet();
+		if (criterias.contains("manufacturer")) {
+			for (String brandName : filterParams.get("manufacturer")) {
+				for (Product product : listOfProducts) {
+					if (brandName.equalsIgnoreCase(product.getManufacturer())) {
+						productsByBrand.add(product);
+					}
+				}
+			}
+			System.out.println("By brand: " + productsByBrand);
+		}
+		if (criterias.contains("category")) {
+			for (String category : filterParams.get("category")) {
+				productsByCategory.addAll(this.getProductsByCategory(category));
+			}
+			System.out.println("By category: " + productsByCategory);
+		}
+
+		if (criterias.contains("high") && criterias.contains("low")) {
+			for (String unitPriceLow : filterParams.get("low")) {
+				int low = Integer.parseInt(unitPriceLow);
+
+				for (String unitPriceHigh : filterParams.get("high")) {
+					int high = Integer.parseInt(unitPriceHigh);
+
+					for (Product product : listOfProducts) {
+						if (product.getUnitPrice().intValueExact() <= high
+								&& product.getUnitPrice().intValueExact() >= low) {
+							productsByUnitPrice.add(product);
+
+						}
+					}
+
+				}
+			}
+		} else if (criterias.contains("high") || criterias.contains("low")) {
+			if (criterias.contains("low")) {
+				for (String unitPrice : filterParams.get("low")) {
+					int low = Integer.parseInt(unitPrice);
+
+					for (Product product : listOfProducts) {
+						if (product.getUnitPrice().intValueExact() > low) {
+							productsByUnitPrice.add(product);
+
+						}
+					}
+				}
+			}
+
+			if (criterias.contains("high")) {
+				for (String unitPrice : filterParams.get("high")) {
+					int high = Integer.parseInt(unitPrice);
+
+					for (Product product : listOfProducts) {
+						if (product.getUnitPrice().intValueExact() < high) {
+							productsByUnitPrice.add(product);
+
+						}
+
+					}
+				}
+			}
+		}
+
+		System.out.println("By unit price: " + productsByUnitPrice);
+		return productsByUnitPrice;
 	}
 
 	public List<Product> getProductsByManufacturer(String manufacturer) {
@@ -114,4 +183,77 @@ public class InMemoryProductRepository implements ProductRepository {
 		return productsByManufacturer;
 	}
 
+	public Set<Product> getProductsByManPrize(Map<String, List<String>> filterParams, String productCategory,
+			String productManufacturer) {
+		Set<Product> productsByManPrize = new HashSet<Product>();
+		Set<String> criterias = filterParams.keySet();
+
+		List<Product> productsByCategory = new ArrayList<Product>();
+		List<Product> productsByManufacturer = new ArrayList<Product>();
+
+		for (Product product : listOfProducts) {
+			if (productCategory.equalsIgnoreCase(product.getCategory())) {
+				productsByCategory.add(product);
+
+				for (Product producte : productsByCategory) {
+					if (productManufacturer.equalsIgnoreCase(product.getManufacturer())) {
+						productsByManufacturer.add(producte);
+
+						if (criterias.contains("high") && criterias.contains("low")) {
+							for (String unitPriceLow : filterParams.get("low")) {
+								int low = Integer.parseInt(unitPriceLow);
+
+								for (String unitPriceHigh : filterParams.get("high")) {
+									int high = Integer.parseInt(unitPriceHigh);
+
+									for (Product products : productsByManufacturer) {
+										if (products.getUnitPrice().intValueExact() <= high
+												&& products.getUnitPrice().intValueExact() >= low) {
+											productsByManPrize.add(products);
+
+										}
+									}
+
+								}
+							}
+						} else if (criterias.contains("high") || criterias.contains("low")) {
+							if (criterias.contains("low")) {
+								for (String unitPrice : filterParams.get("low")) {
+									int low = Integer.parseInt(unitPrice);
+
+									for (Product products : productsByManufacturer) {
+										if (products.getUnitPrice().intValueExact() > low) {
+											productsByManPrize.add(products);
+
+										}
+									}
+								}
+							}
+
+							if (criterias.contains("high")) {
+								for (String unitPrice : filterParams.get("high")) {
+									int high = Integer.parseInt(unitPrice);
+
+									for (Product products : productsByManufacturer) {
+										if (products.getUnitPrice().intValueExact() < high) {
+											productsByManPrize.add(products);
+
+										}
+
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+		}
+
+		return productsByManPrize;
+	}
+
+	public void addProduct(Product product) {
+		listOfProducts.add(product);
+		}
 }
