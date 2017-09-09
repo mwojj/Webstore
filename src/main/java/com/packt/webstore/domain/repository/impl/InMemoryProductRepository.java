@@ -257,4 +257,7 @@ public class InMemoryProductRepository implements ProductRepository {
 	public void addProduct(Product product) {
 		listOfProducts.add(product);
 		}
+	
+	
+	
 }

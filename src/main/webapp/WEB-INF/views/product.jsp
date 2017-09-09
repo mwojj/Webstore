@@ -19,6 +19,11 @@
 	<section class="container">
 		<div class="row">
 			<div class="col-md-5">
+				<img
+					src="<c:url value="/resource/images/${product.productId}.png"></c:url>"
+					alt="image" style="width: 100%" />
+
+
 				<h3>${product.name}</h3>
 				<p>${product.description}</p>
 				<p>
@@ -31,19 +36,26 @@
 					<strong>Kategoria</strong>: ${product.category}
 				</p>
 				<p>
-					<strong>Dostępna liczba sztuk </strong>:${product.unitsInStock}
+					<strong>Dostępna liczba sztuk</strong>:${product.unitsInStock}
 				</p>
 				<h4>${product.unitPrice}PLN</h4>
+
 				<p>
-					<a href="<spring:url value="/products" />" class="btn btndefault">
+					<strong>Instrukcja produktu</strong>: <a href="<c:url value="/resource/pdf/${product.productId}.pdf"></c:url>">Pobierz instrukcję</a>
+				</p>
+
+				<a href="<spring:url value="/products" />" class="btn btndefault">
 						<span class="glyphicon-hand-left glyphicon"></span> Wstecz
 					</a>
 				</p>
+				
+				
 				<p>
 					<a href="#" class="btn btn-warning btn-large"> <span
 						class="glyphicon-shopping-cart glyphicon"></span> Zamów teraz
 					</a>
 				</p>
+			
 			</div>
 		</div>
 	</section>
