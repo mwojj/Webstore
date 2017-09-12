@@ -48,7 +48,6 @@ public class Product {
 	private MultipartFile productImage;
 	
 	
-	
 	public Product() {
 		super();
 	}
