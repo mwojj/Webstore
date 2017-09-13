@@ -20,4 +20,8 @@ Current version of this project includes:
 - Hibernate validator, 
 - REST & CRUD cart handling.
 
-In progress: Ajax
+AD. 13.09.2017
+- Ajax
+- Spring Web Flow
+
+In progress: Additionaly inputs to customize client while choosing a supply method.
