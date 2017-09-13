@@ -1,5 +1,6 @@
 package com.packt.webstore.domain;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -16,7 +17,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement
-public class Product {
+public class Product implements Serializable {
+	private static final long serialVersionUID = 1260536622217225893L;
 	@Pattern(regexp="P[0-9]+", message="{Pattern.Product.productId.validation}")
 	@ProductId
 	private String productId;
