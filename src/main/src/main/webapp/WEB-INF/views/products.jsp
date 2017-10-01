@@ -24,8 +24,8 @@
 				<div class="col-sm-6 col-md-3" style="padding-bottom: 15px">
 					<div class="thumbnail">
 						<img
-							src="<c:url value="/resource/images/${product.productId}.png"></c:url>"
-							alt="image" style="width: 100%" />
+							src="<c:url value="/resources/images/${product.productId}.png"></c:url>"
+							alt="image" style="width: 300px; height: 300px" />
 						<div class="caption">
 							<h3>${product.name}</h3>
 							<p>${product.description}</p>
@@ -33,7 +33,7 @@
 							<p>Liczba sztuk w magazynie: ${product.unitsInStock}</p>
 							<p>
 								<a
-									href=" <spring:url value="/products/product?id=${product.productId}" />"
+									href=" <spring:url value="/webstore/products/product?id=${product.productId}" />"
 									class="btn btn-primary"> <span
 									class="glyphicon-info-sign glyphicon" /></span> Szczegóły
 								</a>
@@ -45,5 +45,13 @@
 			</c:forEach>
 		</div>
 	</section>
+<section>
+	<div>
+		<a href="<spring:url value = "/webstore/products/add" />"
+		class="btn btn-primary">
+		<span class="glyphicon-info-sign glyphicon" /></span> Dodaj nowy produkt do sklepu
+		</a>
+	</div>
+</section>
 </body>
 </html>
